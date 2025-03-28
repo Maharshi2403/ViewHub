@@ -1,15 +1,5 @@
-import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
-
-interface Message {
-  role: string;
-  content: string;
-}
-
-interface ChatProps {
-  messages: Message[];
-  setMessages: Dispatch<SetStateAction<Message[]>>;
-}
 
 interface TreeNode {
   name: string;
@@ -27,7 +17,7 @@ interface HierarchyLink extends d3.HierarchyLink<TreeNode> {
   target: HierarchyNode;
 }
 
-const Chat = ({ messages, setMessages }: ChatProps) => {
+const Chat = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState("");
@@ -368,12 +358,6 @@ const Chat = ({ messages, setMessages }: ChatProps) => {
     setIsLoading(true);
     setResponse(""); // Clear previous response
 
-    // Add user message to chat history
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { role: "user", content: input },
-    ]);
-
     try {
       // Always use deepseek-r1 model for analysis
       const aiResponse = await fetch("http://localhost:11434/api/generate", {
@@ -390,21 +374,11 @@ const Chat = ({ messages, setMessages }: ChatProps) => {
       const data = await aiResponse.json();
       const cleanedResponse = cleanResponse(data.response);
       setResponse(cleanedResponse);
-      // Add AI response to chat history
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { role: "assistant", content: cleanedResponse },
-      ]);
       setInput(""); // Clear input
     } catch (error) {
       console.error("Error:", error);
       const errorMessage = "Error occurred while analyzing the input";
       setResponse(errorMessage);
-      // Add error message to chat history
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { role: "assistant", content: errorMessage },
-      ]);
     } finally {
       setIsLoading(false);
     }

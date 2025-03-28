@@ -6,10 +6,6 @@ function App() {
     Array<{ role: string; content: string }>
   >([]);
 
-  const clearMessages = () => {
-    setMessages([]);
-  };
-
   return (
     <>
       <Chat messages={messages} setMessages={setMessages} />

@@ -68,14 +68,14 @@ const Chat = ({ messages, setMessages }: ChatProps) => {
       };
 
       // Process the data
-      const processObject = (obj: any, parentName: string): TreeNode[] => {
+      const processObject = (obj: any): TreeNode[] => {
         // Handle arrays
         if (Array.isArray(obj)) {
           return obj.map((item, index): TreeNode => {
             if (item && typeof item === "object") {
               return {
                 name: `[${index}]`,
-                children: processObject(item, `[${index}]`),
+                children: processObject(item),
               };
             }
             return {
@@ -90,7 +90,7 @@ const Chat = ({ messages, setMessages }: ChatProps) => {
           if (value && typeof value === "object") {
             return {
               name: key,
-              children: processObject(value, key),
+              children: processObject(value),
             };
           }
           return {
@@ -101,7 +101,7 @@ const Chat = ({ messages, setMessages }: ChatProps) => {
       };
 
       // Process top-level data
-      root.children = processObject(data, "root");
+      root.children = processObject(data);
 
       console.log("Generated tree structure:", root);
       return root;
@@ -352,17 +352,6 @@ const Chat = ({ messages, setMessages }: ChatProps) => {
       }
     }
   }, [response]);
-
-  const generateResponse = async (url: string) => {
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      return JSON.stringify(data, null, 2);
-    } catch (error) {
-      console.error("Error fetching JSON:", error);
-      return "Error: " + error;
-    }
-  };
 
   const cleanResponse = (text: string) => {
     // Remove think tags and their content

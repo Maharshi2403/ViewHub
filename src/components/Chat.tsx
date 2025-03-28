@@ -368,6 +368,12 @@ const Chat = ({ messages, setMessages }: ChatProps) => {
     setIsLoading(true);
     setResponse(""); // Clear previous response
 
+    // Add user message to chat history
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { role: "user", content: input },
+    ]);
+
     try {
       // Always use deepseek-r1 model for analysis
       const aiResponse = await fetch("http://localhost:11434/api/generate", {
@@ -382,11 +388,23 @@ const Chat = ({ messages, setMessages }: ChatProps) => {
         }),
       });
       const data = await aiResponse.json();
-      setResponse(cleanResponse(data.response));
+      const cleanedResponse = cleanResponse(data.response);
+      setResponse(cleanedResponse);
+      // Add AI response to chat history
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "assistant", content: cleanedResponse },
+      ]);
       setInput(""); // Clear input
     } catch (error) {
       console.error("Error:", error);
-      setResponse("Error occurred while analyzing the input");
+      const errorMessage = "Error occurred while analyzing the input";
+      setResponse(errorMessage);
+      // Add error message to chat history
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "assistant", content: errorMessage },
+      ]);
     } finally {
       setIsLoading(false);
     }

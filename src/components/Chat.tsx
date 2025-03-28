@@ -1,5 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
 import * as d3 from "d3";
+
+interface Message {
+  role: string;
+  content: string;
+}
+
+interface ChatProps {
+  messages: Message[];
+  setMessages: Dispatch<SetStateAction<Message[]>>;
+}
 
 interface TreeNode {
   name: string;
@@ -17,7 +27,7 @@ interface HierarchyLink extends d3.HierarchyLink<TreeNode> {
   target: HierarchyNode;
 }
 
-const Chat = () => {
+const Chat = ({ messages, setMessages }: ChatProps) => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState("");

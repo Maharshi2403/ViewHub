@@ -343,46 +343,46 @@ const Chat = () => {
     }
   }, [response]);
 
-  const cleanResponse = (text: string) => {
-    // Remove think tags and their content
-    text = text.replace(/<think>[\s\S]*?<\/think>/g, "");
-    // Remove any remaining XML/HTML tags
-    text = text.replace(/<[^>]*>/g, "");
-    return text.trim();
-  };
+  // const cleanResponse = (text: string) => {
+  //   // Remove think tags and their content
+  //   text = text.replace(/<think>[\s\S]*?<\/think>/g, "");
+  //   // Remove any remaining XML/HTML tags
+  //   text = text.replace(/<[^>]*>/g, "");
+  //   return text.trim();
+  // };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (!input.trim()) return;
 
-    setIsLoading(true);
-    setResponse(""); // Clear previous response
+  //   setIsLoading(true);
+  //   setResponse(""); // Clear previous response
 
-    try {
-      // Always use deepseek-r1 model for analysis
-      const aiResponse = await fetch("http://localhost:11434/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "deepseek-r1",
-          prompt: input,
-          stream: false,
-        }),
-      });
-      const data = await aiResponse.json();
-      const cleanedResponse = cleanResponse(data.response);
-      setResponse(cleanedResponse);
-      setInput(""); // Clear input
-    } catch (error) {
-      console.error("Error:", error);
-      const errorMessage = "Error occurred while analyzing the input";
-      setResponse(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   try {
+  //     // Always use deepseek-r1 model for analysis
+  //     const aiResponse = await fetch("http://localhost:11434/api/generate", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         model: "deepseek-r1",
+  //         prompt: input,
+  //         stream: false,
+  //       }),
+  //     });
+  //     const data = await aiResponse.json();
+  //     const cleanedResponse = cleanResponse(data.response);
+  //     setResponse(cleanedResponse);
+  //     setInput(""); // Clear input
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     const errorMessage = "Error occurred while analyzing the input";
+  //     setResponse(errorMessage);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <div
@@ -538,7 +538,7 @@ const Chat = () => {
               fontFamily: "monospace",
             }}
           >
-            Enter text to analyze with deepseek-r1
+            Enter text to analyze Data api endpoint
           </div>
         )}
       </div>
@@ -559,7 +559,7 @@ const Chat = () => {
         }}
       >
         <form
-          onSubmit={handleSubmit}
+          
           style={{
             display: "flex",
             gap: "10px",
@@ -621,20 +621,7 @@ const Chat = () => {
               outline: "none",
             }}
           />
-          <button
-            type="submit"
-            style={{
-              padding: "10px 20px",
-              background: "#4f46e5",
-              border: "none",
-              borderRadius: "8px",
-              color: "white",
-              cursor: "pointer",
-              transition: "background 0.2s",
-            }}
-          >
-            Send
-          </button>
+          
         </form>
       </div>
     </div>

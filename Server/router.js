@@ -1,9 +1,16 @@
 const express = require('express')
-const route = Router();
+const userRoute = require('./Users/user')
+const cors = require('cors')
 const PORT = 3000;
 const app = express()
 
-app.get("/user", )
+//intial cors allows * network address to bypass errors
+app.use(cors())
+app.use(express.json())
+
+//Authentication Routs
+app.get("/auth", userRoute)
+
 
 app.listen(PORT, (err) => {
     if(err){

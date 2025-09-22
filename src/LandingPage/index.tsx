@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Chat from "../components/Chat";
 
 function LandingPage(){
@@ -11,6 +12,20 @@ function LandingPage(){
 
         </>
     )
+=======
+
+
+function LandingPage(){
+     
+    return (
+       <>
+       <div>
+        <nav className="flex h-14 w-full bg-[#33323211] font-white text-xl justify-center item-center pr-7">Nav</nav>
+        
+       </div>
+       </> 
+    );
+>>>>>>> 8b1fe6bd8efd59afea8f0a66d3a180586e3ac6fe
 }
 
 export default LandingPage;

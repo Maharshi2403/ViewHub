@@ -9,10 +9,16 @@ app.use(cors())
 app.use(express.json())
 
 //Authentication Routs
-app.get("/auth", userRoute)
+app.use("/auth", userRoute)
 
+app.get("/test", (req,res) => {
+    console.log("connection setup!")
+    res.status(200).send({
+        msg: "connection request recived!"
+    })
+})
 
-app.listen(PORT, (err) => {
+app.listen(PORT,'0.0.0.0', (err) => {
     if(err){
         console.log("Errot encountered at main rout")
     }else{

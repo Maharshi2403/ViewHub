@@ -1,14 +1,13 @@
-import { lowercase, maxLength, minLength } from 'zod';
 
-const mongoose = require('mongoose');
-const env = require('dotenv').config
-const Users  = require('./userSchema')
+const mongoose = require('mongoose')
+const env = require('dotenv').config()
+
 
 async function connection(){
     try{
-        const response = await mongoose.connect(`${DB_STRING}`);
+        const response = await mongoose.connect(`${process.env.DB_STRING}`);
 
-        if(response.ok()){
+        if(response.ok){
             console.log("database connection successfull!!!!")
         }else{
             console.log("connection did not established.")
@@ -56,5 +55,5 @@ const user = new mongoose.Schema({
 
 })
 
-export default Users = mongoose.model('user', user)
-
+const Users = mongoose.model('user', user)
+module.exports = Users

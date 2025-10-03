@@ -89,11 +89,18 @@ Auth.post("/Signin",async (req,res) =>{
           // IMPORTANT: order of comparision matters
           if(req.body.password !== val.password){
               res.status(404).send("INCORRECT: PASSWORD OR USERNAME!")
-          }
+          }else{
+          
+          const token = await jwt.sign({username: val.userName}, 'key123');
+          const tkn = await token.toString();
+          console.log(tkn)
+          console.log("New token generated")
 
           res.status(200).send({
-               msg: "user loggedIn"
+               msg: "user loggedIn",
+               token: tkn
           })
+     }
       }
   }catch(ERROR){
      console.log("Validation error in login")

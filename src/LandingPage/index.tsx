@@ -1,7 +1,13 @@
 
 import React, { useState } from 'react';
 
-function LandingPage() {
+type LandingProps = {
+  onLogin?: () => void;
+  onSignup?: () => void;
+  onExplore?: () => void;
+};
+
+function LandingPage({ onLogin, onSignup, onExplore }: LandingProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -37,9 +43,12 @@ function LandingPage() {
               <a href="#about" className="liquid-link">About</a>
               <a href="#contact" className="liquid-link">Contact</a>
             </div>
-            <button className="liquid-button">
-              Get Started
-            </button>
+            <div className="flex items-center gap-4">
+              {onLogin && (
+                <button className="liquid-link" onClick={onLogin}>Sign in</button>
+              )}
+              <button className="liquid-button" onClick={onSignup}>Get Started</button>
+            </div>
           </div>
         </div>
       </nav>
@@ -60,11 +69,11 @@ function LandingPage() {
               interactive tree structures for instant insight and easier analysis.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button className="liquid-button text-lg px-8 py-4 animate-pulse-slow">
+              <button className="liquid-button text-lg px-8 py-4 animate-pulse-slow" onClick={onExplore}>
                 Explore Now
               </button>
-              <button className="liquid-link text-lg px-8 py-4">
-                Watch Demo
+              <button className="liquid-link text-lg px-8 py-4" onClick={onLogin}>
+                Sign in
               </button>
             </div>
           </div>

@@ -13,6 +13,8 @@ dist-ssr
 *.local
 /Server/node_modules
 /Server/.env 
+/GraphQL/node_modules
+/GraphQL/.env
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

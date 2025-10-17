@@ -1,0 +1,58 @@
+# .meshrc.yaml (Updated for Robustness)
+sources:
+  - name: API1  # Generic name; works for any endpoint
+    handler:
+      jsonSchema:
+        endpoint: https://jsonplaceholder.typicode.com  # Or your varying base
+        operations:
+          - type: Query
+            field: fetchData1  # Neutral GraphQL field
+            path: /users  # Or /anything; no assumption
+            method: GET
+            # Optional sample; if absent, raw JSON
+            responseSample: ./jsons/sample1.json  # Only if you have one
+            responseTypeName: Data1Response  # But override to JSON below
+            exposeResponseMetadata: true  # Adds status/errors
+            # Handle varying responses (e.g., empty array vs object)
+            responseByStatusCode:
+              200: { responseSample: ./jsons/sample1.json }  # Or omit for raw
+              default: { type: JSON }  # Fallback for unknowns
+        # Dynamic args for any structure
+        queryStringOptions:
+          arrayFormat: indices  # Flexible for varying arrays
+
+  - name: API2
+    handler:
+      jsonSchema:
+        endpoint: https://api.example.com  # Your second varying API
+        operations:
+          - type: Query
+            field: fetchData2
+            path: /posts  # Or /weather, /stocks—anything
+            method: GET
+            # No sample = raw JSON always
+            responseTypeName: Data2Response
+
+# Global transforms: Minimal, to preserve arbitrary structures
+transforms:
+  - filterSchema:
+      filters: []  # No pruning; keep everything
+  - rename:  # Only rename if detected
+      renames: []  # Empty; do dynamically in resolvers
+
+additionalTypeDefs:
+  - |
+    scalar JSON
+    type Query {
+      mergedData(mergeField: String, filter: JSON): MergedResult!
+      detectFields(endpoint: String!): [String!]!  # Helper: Scan keys for dynamic UI
+    }
+    type MergedResult {
+      items: [JSON!]!  # Always JSON; no user assumption
+      hasUserData: Boolean!  # Flag for UI
+      detectedKeys: [String!]!
+    }
+    type DataResponse {
+      body: JSON!  # Raw payload
+      metadata: JSON  # Headers/status for debugging
+    }

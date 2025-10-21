@@ -3,7 +3,7 @@ ViewHub: API Data Orchestration and Analysis Tool
 <!-- The logo you provided is incorporated here -->
 
 <p align="center">
-<img src="55e6eb1b-0068-4f5b-858e-cd73267b359b.jpg" alt="ViewHub Telescope Logo" width="200"/>
+<img src="./public/logo.jpg" alt="ViewHub Telescope Logo" width="200"/>
 </p>
 
 ViewHub is a powerful API analysis and data orchestration platform designed to drastically reduce your data preprocessing time. It transforms complex, disparate API responses into clean, unified, and downloadable datasets, making data merging and analysis effortless.

@@ -81,6 +81,7 @@ async function schemaBuilder(jsonData) {
     console.log('Generated Types:\n', types);
     return { types, rootType: '[DataItem]', isArray: true };
   } else if (typeof jsonData === 'object' && jsonData !== null) {
+    console.log('JSON Data is an object, generating single root type.');
     const types = generateTypeFromObject(jsonData, 'DataRoot', generatedTypes);
     console.log('Generated Types:\n', types);
     return { types, rootType: 'DataRoot', isArray: false };

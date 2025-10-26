@@ -1,12 +1,14 @@
 import { useRef, useState } from 'react';
 import { createTreeData, renderTree } from '../utils/jsonTree';
-
+import serverPlugin from '../Plugins/serverPlugin';
 export default function Dashboard() {
   const [url, setUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [hasTree, setHasTree] = useState(false);
+  const[requestType, setRequestType] = useState('GET');
+  
 
   async function fetchAndRender(inputUrl: string, searchQuery?: string) {
     if (!inputUrl) return;
@@ -29,7 +31,11 @@ export default function Dashboard() {
       } else {
         setError('Invalid JSON data');
       }
+     const serverData = await serverPlugin(inputUrl, requestType);
+     console.log('Server Plugin Data:', serverData);
+      
     } catch (e) {
+      console.error(e);
       setError('Failed to fetch or parse JSON from URL');
     } finally {
       setIsLoading(false);
@@ -52,16 +58,18 @@ export default function Dashboard() {
                 placeholder="Enter JSON API URL"
                 className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition"
               />
-              <input
-                placeholder="Search keys/values"
-                onKeyDown={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  if (e.key === 'Enter') {
-                    fetchAndRender(url, target.value);
-                  }
+              <select
+                className="bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition"
+                onChange={(e) => {
+                  const selectedValue = e.target.value;
+                  setRequestType(selectedValue);
+                  
                 }}
-                className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/30 transition"
-              />
+              >
+                <option className=""value="GET">GET</option>
+                <option value="">POST</option>
+                {/* Add options dynamically based on the fetched JSON structure */}
+              </select>
               <button
                 className="liquid-button px-6"
                 disabled={isLoading || !url}
